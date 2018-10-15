@@ -1,0 +1,60 @@
+
+# Node installation
+curl -sL https://deb.nodesource.com/setup_10.x | sudo -E bash -
+
+----
+
+sudo pip install virtualenv virtualenvwrapper
+
+virtualenv -p python3 mutteri
+
+sudo apt-get install bluez-hcidump
+
+sudo apt-get install python3-dev python3-psutil
+
+
+source mutteri/bin/activate
+pip install --upgrade setuptools
+pip install ruuvitag-sensor
+
+python  mutteri/lib/python3.5/site-packages/ruuvitag_sensor/ --help
+alias ruuvitag='python3 /home/antti/code/mutteri/lib/python3.5/site-packages/ruuvitag_sensor'
+
+hcitool dev
+hciconfig
+hcidump -t -x | head -n40
+
+systemctl start hciuart
+
+----
+
+sudo setcap 'cap_net_raw,cap_net_admin+eip' `which hcitool`
+sudo setcap 'cap_net_raw,cap_net_admin+eip' `which hcidump`
+
+----
+
+C9:23:B3:BA:65:92
+
+https://stackoverflow.com/questions/27451076/raspberry-pi-ibeacon
+
+https://www.thepolyglotdeveloper.com/2016/09/scan-bluetooth-enabled-ibeacons-via-raspberry-pi-iot-device/
+
+----
+Makkari
+C9:23:3B:BA:65:92
+
+Askartelu
+C4:CC:3E:4C:9B:46
+
+Sauna
+DE:90:8D:DA:F8:2F
+
+----
+
+
+
+
+
+
+
+

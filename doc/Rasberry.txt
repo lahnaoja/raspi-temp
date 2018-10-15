@@ -1,0 +1,79 @@
+
+
+Rasberry
+----------
+
+-Virtual env
+-Rsync
+
+
+
+--------
+Python
+
+https://howchoo.com/g/nwewzjmzmjc/a-guide-to-python-virtual-environments-with-virtualenvwrapper
+
+sudo apt install python3-pip
+sudo pip3 install simplejson
+sudo pip install virtualenv virtualenvwrapper
+
+--------
+Ruuvitag
+
+https://github.com/ttu/ruuvitag-sensor/blob/master/install_guide_pi.md
+https://github.com/ttu/ruuvitag-sensor/blob/master/examples/post_to_server.py
+
+
+--------
+/*
+  Create "evdata" database and user
+ */
+
+create database if not exists evdata;
+
+create user 'collector'@'%' identified by 'salasana';
+grant all privileges on evdata.* to 'collector'@'%';
+--
+
+#
+# Rsync dist files to the server
+#
+
+
+DESTINATION_SERVER=ac2sg@34.242.126.142
+DESTINATION_FOLDER=/opt/ac2sg/echarger/active/AuthServer/
+
+EXCLUDED="\
+--exclude /node_modules \
+--exclude *.iml \
+--exclude .idea \
+--exclude start-cmd.cmd \
+--exclude dev.cmd \
+--exclude AWS-Deploy.*"
+
+# echo ${EXCLUDED}
+
+make_dryrun() {
+    
+    rsync -avn ${EXCLUDED} ./ ${DESTINATION_SERVER}:${DESTINATION_FOLDER}
+    echo
+    echo "Dry run ... Give 'r' on command line to run"
+    echo
+}
+
+make_sync() {
+    rsync -av ${EXCLUDED} ./ ${DESTINATION_SERVER}:${DESTINATION_FOLDER}
+}
+
+if [ "$1" = "r" ]; then
+    make_sync
+else
+    make_dryrun
+fi
+
+--
+
+ssh root@MachineB 'bash -s' < local_script.sh
+
+--
+
